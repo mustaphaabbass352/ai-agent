@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Agent for Instagram & WhatsApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0f1a;
+      --card:#0f1526;
+      --muted:#96a0b5;
+      --text:#eaf0ff;
+      --accent:#7cf4d1;
+      --accent-2:#6ea8ff;
+      --accent-3:#b389ff;
+      --radius:14px;
+      --shadow:0 10px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.05);
+      --ring:0 0 0 4px rgba(124,244,209,.25);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(110,168,255,.25), transparent 60%),
+        radial-gradient(1000px 700px at 110% 10%, rgba(179,137,255,.22), transparent 60%),
+        linear-gradient(180deg, #0a0e18 0%, #070b14 100%);
+      background-color:var(--bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .container{
+      max-width:1100px;
+      width:100%;
+      margin:0 auto;
+      padding:0 20px;
+    }
+    header{
+      position:relative;
+      padding:28px 0 8px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    .brand-badge{
+      width:32px;height:32px;border-radius:10px;
+      background:conic-gradient(from 180deg at 50% 50%, var(--accent-2), var(--accent-3), var(--accent));
+      filter:saturate(1.1);
+      box-shadow:0 8px 18px rgba(110,168,255,.35), inset 0 0 0 1px rgba(255,255,255,.2);
+    }
+    .hero{
+      display:grid;
+      gap:22px;
+      padding:56px 0 40px;
+      text-align:center;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      margin:0 auto 6px;
+      padding:6px 12px;
+      border-radius:999px;
+      background:rgba(124,244,209,.08);
+      color:var(--accent);
+      font-weight:600;
+      font-size:13px;
+      letter-spacing:.3px;
+      box-shadow:inset 0 0 0 1px rgba(124,244,209,.22);
+    }
+    h1{
+      margin:0 auto;
+      line-height:1.05;
+      font-weight:800;
+      font-size:clamp(28px, 6vw, 54px);
+      max-width:900px;
+      letter-spacing:-0.5px;
+    }
+    .sub{
+      margin:0 auto;
+      max-width:760px;
+      color:var(--muted);
+      font-size:clamp(15px, 2.2vw, 18px);
+      line-height:1.6;
+    }
+    .cta-row{
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      margin-top:8px;
+      flex-wrap:wrap;
+    }
+    .cta{
+      position:relative;
+      appearance:none;
+      border:0;
+      padding:14px 22px;
+      border-radius:14px;
+      font-weight:800;
+      font-size:16px;
+      letter-spacing:.2px;
+      color:#05120e;
+      background:linear-gradient(180deg, #9bffd9 0%, #7cf4d1 40%, #67e9c6 100%);
+      box-shadow:0 12px 24px rgba(124,244,209,.35), inset 0 -1px 0 rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.6);
+      cursor:pointer;
+      transform:translateZ(0);
+      transition:transform .12s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .cta:hover{transform:translateY(-2px) scale(1.01); filter:saturate(1.05)}
+    .cta:active{transform:translateY(0); box-shadow:0 8px 16px rgba(124,244,209,.28)}
+    .cta:focus-visible{outline:none; box-shadow:var(--ring)}
+    .ghost{
+      padding:14px 18px;
+      border-radius:12px;
+      color:var(--text);
+      background:rgba(255,255,255,.04);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+      font-weight:700;
+      transition:transform .12s ease, background .2s ease;
+    }
+    .ghost:hover{transform:translateY(-1px); background:rgba(255,255,255,.06)}
+    .panel{
+      margin-top:32px;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px;
+      border-radius:12px;
+      background:rgba(255,255,255,.03);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+      font-weight:600; color:#dfe7ff; letter-spacing:.2px;
+    }
+    .chip svg{opacity:.9}
+    .features{
+      padding:48px 0 64px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
+      margin-top:18px;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow:var(--shadow);
+      min-height:160px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      transition:transform .18s ease, box-shadow .18s ease, background .3s ease;
+    }
+    .card:hover{transform:translateY(-4px); box-shadow:0 16px 36px rgba(0,0,0,.35)}
+    .card h3{margin:0; font-size:18px}
+    .card p{margin:0; color:var(--muted); line-height:1.6}
+    .badge{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:40px;height:40px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(110,168,255,.6), rgba(110,168,255,.25));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);
+    }
+    .badge.alt{background:linear-gradient(180deg, rgba(179,137,255,.6), rgba(179,137,255,.25))}
+    .badge.accent{background:linear-gradient(180deg, rgba(124,244,209,.7), rgba(124,244,209,.28))}
+    footer{
+      padding:26px 0 40px;
+      color:var(--muted);
+      text-align:center;
+      font-size:14px;
+    }
+    .divider{
+      height:1px; width:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+      margin:0 0 18px;
+    }
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:640px){
+      .grid{grid-template-columns:1fr}
+      .panel{justify-content:flex-start}
+      .hero{padding:44px 0 30px}
+    }
+    @media (prefers-reduced-motion:no-preference){
+      .fade-in{opacity:0; transform:translateY(8px); animation:fade .6s ease forwards}
+      .fade-in.d2{animation-delay:.1s}
+      .fade-in.d3{animation-delay:.2s}
+      .fade-in.d4{animation-delay:.3s}
+      @keyframes fade{to{opacity:1; transform:translateY(0)}}
+    }
+    .sr-only{
+      position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0
+    }
+    a.button-link{ text-decoration:none }
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#features">Skip to features</a>
+  <header>
+    <div class="container brand">
+      <div class="brand-badge" aria-hidden="true"></div>
+      AI Agent
+    </div>
+  </header>
+  <main>
+    <section class="hero container">
+      <div class="eyebrow fade-in">Now on Instagram & WhatsApp</div>
+      <h1 class="fade-in d2">AI Agent for Instagram &amp; WhatsApp</h1>
+      <p class="sub fade-in d3">Automate messages, replies, and tasks with AI. Save time and engage your audience effortlessly.</p>
+      <div class="cta-row fade-in d4">
+        <button class="cta" id="cta">Try It for Free</button>
+        <a href="#features" class="ghost button-link" id="learn">Learn more</a>
+      </div>
+      <div class="panel fade-in d4" aria-label="Supported platforms">
+        <div class="chip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 11.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          AI-powered replies in seconds
+        </div>
+        <div class="chip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Multi-platform: WhatsApp & Instagram
+        </div>
+        <div class="chip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Easy setup, no website required
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="features container">
+      <div class="divider"></div>
+      <div class="grid">
+        <article class="card">
+          <div class="badge accent" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3v18M3 12h18" stroke="#05120e" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>AI-powered replies in seconds</h3>
+          <p>Respond instantly with context-aware AI that understands intent and tone.</p>
+        </article>
+        <article class="card">
+          <div class="badge" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M7 12h10M12 7v10M4 4h16v16H4z" stroke="#0a1222" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3>Multi-platform support</h3>
+          <p>Connect WhatsApp and Instagram to manage conversations in one place.</p>
+        </article>
+        <article class="card">
+          <div class="badge alt" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M3 12l4 4 7-7 7 7" stroke="#0d0a18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Easy setup, no website required</h3>
+          <p>Simple onboarding. Start automating in minutes without any coding.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <div class="divider"></div>
+      <div>This is a free AI agent demo. Powered by Flowise + Træ.ai</div>
+    </div>
+  </footer>
+  <script>
+    const cta = document.getElementById('cta');
+    const learn = document.getElementById('learn');
+    const to = document.getElementById('features');
+    function smooth(el){
+      if(!el) return;
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    cta.addEventListener('click', ()=> smooth(to));
+    learn.addEventListener('click', (e)=> {
+      e.preventDefault();
+      smooth(to);
+    });
+    window.addEventListener('load', ()=> {
+      if(window.location.hash === '#features') smooth(to);
+    });
+  </script>
+</body>
+</html>
+
